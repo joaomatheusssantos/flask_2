@@ -1,0 +1,30 @@
+version: "3.3"
+services:
+   flask:
+        build: ./flask
+        ports:
+            - 5000:5000
+        volumes:
+        - ./flask:/app
+        depends_on:
+             - db
+   db:
+        image: postgres:12.0-alpine
+        ports: 
+            - 5433:5432
+        volumes: 
+            - ./docker/postgres-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_PASSWORD: 1234
+            POSTGRES_USER: user
+            POSTGRES_DB: flask_db
+   pgadmin:
+         image: dpage/pgadmin4
+         ports:
+             - 5434:80
+         depends_on:
+             - db
+         environment:
+            PGADMIN_DEFAULT_EMAIL: matheus@email.com
+            PGADMIN_DEFAULT_PASSWORD: root
+        
